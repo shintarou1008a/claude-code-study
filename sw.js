@@ -1,6 +1,6 @@
 // Service worker: precache the app shell, serve it cache-first so it works offline.
 const PREFIX = "cc-study-";
-const VERSION = "212596346092";
+const VERSION = "a479ea2344a7";
 const CACHE = PREFIX + VERSION;
 const FONT_CACHE = "study-fonts";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png", "apple-touch-icon.png"];
