@@ -1,7 +1,8 @@
 // Service worker: precache the app shell, serve it cache-first so it works offline.
-const VERSION = "3446fa3a6f9c";
-const CACHE = "cc-study-" + VERSION;
-const FONT_CACHE = "cc-study-fonts";
+const PREFIX = "cc-study-";
+const VERSION = "a6b2b361cc65";
+const CACHE = PREFIX + VERSION;
+const FONT_CACHE = "study-fonts";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png", "apple-touch-icon.png"];
 
 self.addEventListener("install", (e) => {
@@ -11,7 +12,8 @@ self.addEventListener("install", (e) => {
 self.addEventListener("activate", (e) => {
   e.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE && k !== FONT_CACHE).map((k) => caches.delete(k))))
+      // Only remove this app's old caches: sibling apps on the same github.io origin share the cache storage.
+      .then((keys) => Promise.all(keys.filter((k) => k.startsWith(PREFIX) && k !== CACHE).map((k) => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });
@@ -38,10 +40,10 @@ self.addEventListener("fetch", (e) => {
     e.respondWith(
       fetch(req)
         .then((res) => { const copy = res.clone(); caches.open(CACHE).then((c) => c.put("index.html", copy)); return res; })
-        .catch(() => caches.match("index.html", { ignoreSearch: true }))
+        .catch(() => caches.open(CACHE).then((c) => c.match("index.html")))
     );
     return;
   }
 
-  e.respondWith(caches.match(req, { ignoreSearch: true }).then((hit) => hit || fetch(req)));
+  e.respondWith(caches.open(CACHE).then((c) => c.match(req, { ignoreSearch: true })).then((hit) => hit || fetch(req)));
 });

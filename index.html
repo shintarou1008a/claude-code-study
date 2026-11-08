@@ -141,6 +141,10 @@ code{font-family:var(--f-mono);font-size:.9em;background:var(--sunk);padding:1px
 .q button.opt.right{border-color:var(--ok);background:var(--accent-soft)}
 .q button.opt.wrong{border-color:var(--ng);background:var(--ng-soft)}
 .q button.opt:disabled{cursor:default;color:var(--fg)}
+/* phone safety: long words, paths and URLs wrap inside their box instead of widening the page */
+#app{overflow-wrap:anywhere;min-width:0}
+#app section,#app .blk,#app .q,#app .opts,#app .terms,#app .terms div,#app .ask,#app .codebox,#app .lhead,#app .goal{min-width:0;max-width:100%}
+#app .codebox pre{max-width:100%}
 .q button.opt.sel{border:2px solid var(--fg);background:var(--surface);font-weight:700}
 .q .mark{display:inline-block;font-size:.85rem;font-weight:700;margin-left:6px;padding:0 8px;border-radius:999px}
 .q .mark.ok{background:var(--accent-soft);color:var(--accent)}
