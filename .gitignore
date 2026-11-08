@@ -1,0 +1,4 @@
+# Local build tooling (contains local paths); only the built site is published.
+build.js
+make-icons.ps1
+sw.template.js
